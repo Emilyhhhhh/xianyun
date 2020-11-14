@@ -1,16 +1,16 @@
 // 封装api接口
-import axios from '@/utils/api.js'
+import { http } from '@/plugins/api.js'
 
 // 首页轮播图
 export const banners = () => {
-    return axios({
+    return http({
         url: 'scenics/banners'
     })
 }
 
 // 登录
 export const login = (data) => {
-    return axios({
+    return http({
         method: 'post',
         url: 'accounts/login',
         data
@@ -20,7 +20,7 @@ export const login = (data) => {
 
 // 注册
 export const register = (data) => {
-    return axios({
+    return http({
         method: 'post',
         url: 'accounts/register',
         data
@@ -30,7 +30,7 @@ export const register = (data) => {
 
 //手机验证码
 export const captchas = (tel) => {
-    return axios({
+    return http({
         method: 'post',
         url: '/captchas',
         // 注意data传参的格式，不然会报400
@@ -43,7 +43,7 @@ export const captchas = (tel) => {
 
 //实时机票城市：首页搜索框
 export const airsSearch = (name) => {
-    return axios({
+    return http({
         url: '/airs/city',
         // 注意data传参的格式，不然会报400
         params: {
@@ -54,7 +54,7 @@ export const airsSearch = (name) => {
 
 //推荐机票：首页底部的特价机票
 export const airsSale = () => {
-    return axios({
+    return http({
         url: '/airs/sale',
         // 注意data传参的格式，不然会报400
     })
@@ -62,7 +62,7 @@ export const airsSale = () => {
 
 //机票列表：机票列表页数据渲染
 export const airsList = (params) => {
-    return axios({
+    return http({
         url: '/airs',
         params
         // 注意data传参的格式，不然会报400

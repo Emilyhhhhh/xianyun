@@ -50,7 +50,7 @@
 
 <script>
 import {banners} from '@/myapi/user.js'
-import axios from '@/utils/api.js'
+import {http} from '@/plugins/api.js'
 export default {
     data(){
         return {
@@ -101,7 +101,7 @@ export default {
         console.log(res);
         this.banners=res.data.data
         this.banners=res.data.data.map(value=>{
-             value.url=axios.defaults.baseURL+value.url
+             value.url=http.defaults.baseURL+value.url
              return value
         })
         console.log(this.banners);

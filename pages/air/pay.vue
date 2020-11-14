@@ -36,27 +36,27 @@ export default {
         }
     },
     // mounted(){
-    //     // userInfo在页面加载完才赋值，一开始没有token，要等一下
-    //     // setTimeout(v=>{
-    //     //     this.$axios({
-    //     //         url:'airorders/'+this.$route.query.id,
-    //     //         headers:{
-    //     //             Authorization:'Bearer '+this.$store.state.userstore.userInfo.token
-    //     //         }
-    //     //     }).then(res=>{
-    //     //         console.log(res);
-    //     //         // price 用于展示
-    //     //         const {payInfo, price} = res.data;
-    //     //         this.price=price
+    //     //userInfo在页面加载完才赋值，一开始没有token，要等一下
+    //     setTimeout(v=>{
+    //         this.$axios({
+    //             url:'airorders/'+this.$route.query.id,
+    //             headers:{
+    //                 Authorization:'Bearer '+this.$store.state.userstore.userInfo.token
+    //             }
+    //         }).then(res=>{
+    //             console.log(res);
+    //             // price 用于展示
+    //             const {payInfo, price} = res.data;
+    //             this.price=price
 
-    //     //          // 生成二维码到canvas
-    //     //         const stage = document.querySelector("#qrcode-stage");
-    //     //         QRCode.toCanvas(stage, payInfo.code_url , {
-    //     //             width: 200
+    //              // 生成二维码到canvas
+    //             const stage = document.querySelector("#qrcode-stage");
+    //             QRCode.toCanvas(stage, payInfo.code_url , {
+    //                 width: 200
 
-    //     //         });
-    //     //     })
-    //     // },200)
+    //             });
+    //         })
+    //     },200)
     // },
     watch: {
         'this.$store.state.userstore.userInfo.token':{

@@ -53,11 +53,11 @@
     </header>
 </template>
 <script>
-import axios from '@/utils/api.js'
+import {http} from '@/plugins/api.js'
 export default {
     data () {
         return {
-            baseURL:axios.defaults.baseURL
+            baseURL:http.defaults.baseURL
         }
     },
     methods: {
