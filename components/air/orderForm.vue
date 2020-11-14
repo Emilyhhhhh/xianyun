@@ -191,34 +191,35 @@ export default {
             //             })
             //         }
             // })
-         Promise.all([
-             this.$refs.usersForm.validate(),
-             this.$refs.columnForm.validate()
-         ]).then(res=>{
-              // 因为 Promise.all 传入了两个元素组成的数组
-              // 所以 res 也是一个数组对应,上面promise 的结果
-             if(res[0]&&res[1]){
-                   console.log("两个表单都交验完了, 应该发请求");
-                                  let data= {
-                                    users:this.users,
-                                    insurances:this.insurances,    
-                                    contactName:this.contactName,   
-                                    contactPhone:this.contactPhone,    
-                                    invoice:this.invoice,     
-                                    captcha:this.captcha,
-                                    seat_xid:this.$route.query.seat_xid,
-                                    air:this.$route.query.id
-                                  }
-                                //  console.log(this.data);
-                                //  console.log(data);
-
-                                //提交完了需要等一段时间
-                                this.$message.success({
-                                    message:'正在生成订单！请稍等',
-                                    duration:1000})
-
-                                //  发送请求
-                                this.$axios({
+           if(this.$store.state.userstore.userInfo.token){
+                Promise.all([
+                    this.$refs.usersForm.validate(),
+                    this.$refs.columnForm.validate()
+                    ]).then(res=>{
+                        // 因为 Promise.all 传入了两个元素组成的数组
+                        // 所以 res 也是一个数组对应,上面promise 的结果
+                        if(res[0]&&res[1]){
+                            console.log("两个表单都交验完了, 应该发请求");
+                          let data= {
+                            users:this.users,
+                            insurances:this.insurances,    
+                            contactName:this.contactName,   
+                            contactPhone:this.contactPhone,    
+                            invoice:this.invoice,     
+                            captcha:this.captcha,
+                            seat_xid:this.$route.query.seat_xid,
+                            air:this.$route.query.id
+                          }
+                            //  console.log(this.data);
+                            //  console.log(data);
+    
+                            //提交完了需要等一段时间
+                            this.$message.success({
+                                message:'正在生成订单！请稍等',
+                                duration:1000})
+    
+                            //  发送请求
+                            this.$axios({
                                     url:'/airorders',
                                     method:'post',
                                     //  Bearer是JWT定义的规范
@@ -227,20 +228,24 @@ export default {
                                     },
                                     data
                                 }).then(res=>{
-                                    console.log(res);
-                                    this.$message.success(res.data.message)
-                                    let id=res.data.data.id
-                                    //跳转到付款页
-                                    this.$router.push({
-                                        path:'/air/pay',
-                                        query:{id}
-                                    })
+                                console.log(res);
+                                this.$message.success({
+                                message:res.data.message,
+                                duration:1000})
+                                let id=res.data.data.id
+                                //跳转到付款页
+                                this.$router.push({
+                                    path:'/air/pay',
+                                    query:{id}
                                 })
-
-             }
-         })
-
-        
+                            })
+            
+                        }
+                    })
+           }else{
+               this.$message.error('请先登录')
+               this.$router.push({path:'/user/login'})
+           }
 
          }
             
