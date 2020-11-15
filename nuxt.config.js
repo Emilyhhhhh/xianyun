@@ -46,7 +46,11 @@ export default {
             // 如果只在浏览器加载的代码, 可以添加一个 属性 ssr: false
             ssr: false
         },
-        '@/plugins/axios' // 调用插件
+        '@/plugins/axios', // 调用插件
+        {
+            src: '@/plugins/vue2editor',
+            ssr: false
+        } // 服务器没有富文本识不了，所以禁掉
     ],
 
     /*
