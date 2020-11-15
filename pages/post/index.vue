@@ -1,5 +1,8 @@
 <template>
-  <div class="index" title="旅游攻略模块首页文件">旅游攻略模块首页文件</div>
+  <div class="container" title="旅游攻略模块首页文件">
+    
+    <el-button type="primary" icon="el-icon-edit" @click="$router.push({path:'/post/create'})">写游记</el-button>
+  </div>
 </template>
 
 <script>
@@ -8,6 +11,10 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" scoped>
 
+.container{
+  width:1000px;
+  margin:0 auto;
+}
 </style>
