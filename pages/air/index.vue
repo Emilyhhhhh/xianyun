@@ -62,7 +62,7 @@
 // import myaxios from '@/plugins/axios.js'
 import searchForm from '@/components/air/searchForm.vue'
 import {airsSale} from '@/myapi/user.js'
-// import http from '@/utils/api.js'
+
 export default {
   data () {
     return {

@@ -1,5 +1,5 @@
 // 封装api接口
-import { http } from '@/plugins/api.js'
+import { http } from '@/plugins/myaxios.js'
 
 // 首页轮播图
 export const banners = () => {

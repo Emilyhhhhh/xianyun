@@ -50,7 +50,7 @@
 
 <script>
 import {banners} from '@/myapi/user.js'
-import {http} from '@/plugins/api.js'
+import {http} from '@/plugins/myaxios.js'
 export default {
     data(){
         return {

@@ -53,7 +53,7 @@
     </header>
 </template>
 <script>
-import {http} from '@/plugins/api.js'
+import {http} from '@/plugins/myaxios.js'
 export default {
     data () {
         return {
@@ -71,7 +71,8 @@ export default {
             console.log(this.$store.state.userstore.userInfo);
             this.$message({
                 message:'已退出',
-                type:'success'
+                type:'success',
+                duration:1000
             })
         },
     },
