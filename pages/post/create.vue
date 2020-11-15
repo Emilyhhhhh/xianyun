@@ -52,10 +52,12 @@
   </div>
 </template>
 
- <script>
-
+<script>
+// import {VueEditor} from 'vue2-editor'
 export default {
-    
+    // components: {
+    //     VueEditor
+    // },
     data () {
         return {
             input:'',
