@@ -150,13 +150,8 @@ export default {
   }
 }
 
-.container{
-  width:1000px;
-  margin:0 auto;
-}
-
 .air-title{
-  margin:15px 0;
+  margin-bottom:15px;
   font-size:20px;
   font-weight: normal;
   color:orange;

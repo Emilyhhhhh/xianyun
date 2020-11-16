@@ -70,11 +70,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
-.container{
-  width:1000px;
-  margin:0 auto;
-  padding-top: 20px;
   .main{
       h2{
           font-weight: normal;
@@ -103,5 +98,4 @@ export default {
 
  }
  
-}
 </style>

@@ -113,7 +113,9 @@ export default {
 
 <style scoped lang="less">
 .container{
+    padding-top: 0px;
     min-width:1000px;
+    width:100% ;  
     margin:0 auto;
     position:relative;
 

@@ -51,4 +51,10 @@ a{
 em,i{
   font-style: normal;
 }
+
+.container {
+    width: 1000px;
+    margin: 0 auto;
+    padding-top: 20px;
+}
 </style>

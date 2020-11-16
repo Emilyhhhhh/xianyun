@@ -1,5 +1,5 @@
 <template>
-    <div class="container" title="酒店搜索组件">
+    <div class="SearchHotel" title="酒店搜索组件">
     <!-- 面包屑 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item>酒店</el-breadcrumb-item>
@@ -87,12 +87,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
-.container{
-  width:1000px;
-  margin:0 auto;
-  padding-top: 20px;
-
   #map {width:420px; height: 260px; }  
-}
+
 </style>
