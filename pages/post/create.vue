@@ -3,21 +3,31 @@
       <el-row :gutter="20">
       <el-col :span="18">
           <div class="main">
+
+            <el-form ref="form" :model="form">
             <h2>发表新攻略</h2>
             <p> 分享你的个人游记，让更多人看到哦！</p>
-            <el-input class='post-title' v-model="input" placeholder="请输入标题"></el-input>
-           <client-only>
-            <VueEditor :editorToolbar='customToolbar' />
-            </client-only>
-            <div class="search">
-                <div class="select">
-                    选择城市
-                <el-input class='post-search' v-model="input" placeholder="请搜索游玩城市"></el-input>
-                </div>
-                <el-button type="primary" size="small">发布</el-button>
 
-                 或者 <span>保存到草稿</span>
-            </div>
+              <el-form-item>
+                  <el-input v-model="form.title" placeholder="请输入标题"></el-input>
+              </el-form-item>
+
+              <el-form-item>
+                 <client-only>
+                <VueEditor :editorToolbar='customToolbar' v-model="form.content" />
+                </client-only>
+              </el-form-item>
+  
+              <el-form-item label="选择城市">
+                   <el-input v-model="form.select" placeholder="请搜索游玩城市" style="width: 200px;"></el-input>
+              </el-form-item>
+
+                  <el-form-item >
+                       <el-button type="primary" size="small">发布</el-button>
+                        或者 <nuxt-link to="/">保存到草稿</nuxt-link>
+                  </el-form-item>
+            </el-form>
+
           </div>
       </el-col>
   <el-col :span="6">
@@ -47,7 +57,6 @@
         </el-row>
       </div></el-col>
 </el-row>
-   
 
   </div>
 </template>
@@ -62,7 +71,12 @@ export default {
         return {
             input:'',
             // 设置富文本器的功能
-            customToolbar: [["bold", "italic", "underline"], [{ list: "ordered" }, { list: "bullet" }], ["image", "code-block"]]
+            customToolbar: [["bold", "italic", "underline"], [{ list: "ordered" }, { list: "bullet" }], ["image", "code-block"]],
+            form:{
+                title:'',
+                content:'',
+                select:'',
+            }
         }
     }
 
@@ -81,11 +95,10 @@ export default {
           color: #a69999;
 
       }
-      .post-title{
-          margin-bottom: 20px;
-      }
+
 
  }
+
  .aside{
      border: 1px solid #beb9b9;
      padding: 10px;
