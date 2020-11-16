@@ -223,9 +223,9 @@ export default {
                                     url:'/airorders',
                                     method:'post',
                                     //  Bearer是JWT定义的规范
-                                    headers:{
-                                        Authorization:'Bearer '+this.$store.state.userstore.userInfo.token
-                                    },
+                                    // headers:{
+                                    //     Authorization:'Bearer '+this.$store.state.userstore.userInfo.token
+                                    // },
                                     data
                                 }).then(res=>{
                                 console.log(res);

@@ -20,3 +20,7 @@ export default ({ store }) => {
         })(store)
     })
 }
+
+// 所有原来 写在 main.js new Vue() 之前的逻辑
+// 在 nuxt 当中都可以利用插件机制实现
+// 所有配置过的插件会自动在 实例创建前执行
