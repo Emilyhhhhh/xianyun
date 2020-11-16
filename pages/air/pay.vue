@@ -65,9 +65,9 @@ export default {
                     console.log(this.$store.state.userstore.userInfo.token);
                     this.$axios({
                     url:'airorders/'+this.$route.query.id,
-                    headers:{
-                        Authorization:'Bearer '+this.$store.state.userstore.userInfo.token
-                    }
+                    // headers:{
+                    //     Authorization:'Bearer '+this.$store.state.userstore.userInfo.token
+                    // }
                 }).then(res=>{
                     console.log(res);
                     // price 用于展示
