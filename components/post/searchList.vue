@@ -9,37 +9,126 @@
         >写游记</el-button
       >
     </div>
-    <div class="tripleList">
-      <h4>塞班贵？一定是你的打开方式不对！6000块玩转塞班</h4>
-      <p>
-        大家对塞班岛总存在着这样的误解，知道它是美属地盘，就理所当然地觉得这里的花费一定很高，花费高有高的玩法，那如果只有6000块的预算呢？要怎么玩？关于旅行这件事，我们要让钱花得更有道理，收下这份攻略，带你6000块花式玩转塞班。图：塞班岛。
-        by第5季旅游一、怎样用6000块玩转塞班？大多数出境游客人不做预算或111111111111111111
-      </p>
-      <div class="pic">
-        <img src="#" alt="" />
-        <img src="#" alt="" />
-        <img src="#" alt="" />
-      </div>
-      <div class="footer">
-        <div class="userdetail">
-          <i class="el-icon-location-information"></i>
-          <span>北京市</span>
-          <span>by</span>
-          <div class="userstatus">
-            <img src="#" alt="" class="user" />
-            <span class="name">地球发动机</span>
-          </div>
-          <i class="el-icon-view"></i>
-          <span class="read">14961</span>
+    <div v-for="(item, index) in currentList" :key="index">
+      <!-- 三图 -->
+      <div class="tripleList" v-if="item.images.length == 3">
+        <h4>{{ item.title }}</h4>
+        <p>
+          {{ item.summary }}
+        </p>
+        <div class="pic">
+          <img :src="item.images[0]" alt="" />
+          <img :src="item.images[1]" alt="" />
+          <img :src="item.images[2]" alt="" />
         </div>
-        <span class="like">79 赞</span>
+        <div class="footer">
+          <div class="userdetail">
+            <i class="el-icon-location-information"></i>
+            <span>{{ item.cityName }}</span>
+            <span>by</span>
+            <div class="userstatus">
+              <img
+                :src="baseURL + item.account.defaultAvatar"
+                alt=""
+                class="user"
+              />
+              <span class="name">{{ item.account.nickname }}</span>
+            </div>
+            <i class="el-icon-view"></i>
+            <span class="read">{{ item.watch }}</span>
+          </div>
+          <span class="like">{{ item.like }} 赞</span>
+        </div>
       </div>
+      <!-- 一图 -->
+      <div class="singleList" v-else>
+        <div class="left">
+          <img :src="item.images[0]" alt="" />
+        </div>
+        <div class="right">
+          <h4>{{ item.title }}</h4>
+          <p>
+            {{ item.summary }}
+          </p>
+          <div class="footer">
+            <div class="userdetail">
+              <i class="el-icon-location-information"></i>
+              <span>{{ item.cityName }}</span>
+              <span>by</span>
+              <div class="userstatus">
+                <img
+                  :src="baseURL + item.account.defaultAvatar"
+                  alt=""
+                  class="user"
+                />
+                <span class="name">{{ item.account.nickname }}</span>
+              </div>
+              <i class="el-icon-view"></i>
+              <span class="read">{{ item.watch }}</span>
+            </div>
+            <span class="like">{{ item.like }} 赞</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 分栏 -->
+    <div class="pagination">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[3, 5, 10, 15]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="articleList.length"
+      >
+      </el-pagination>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+import { http } from "@/plugins/myaxios.js";
+export default {
+  data() {
+    return {
+      articleList: "",
+      baseURL: http.defaults.baseURL,
+      //分页
+      currentPage: 1,
+      pageSize: 3,
+      currentList: "",
+    };
+  },
+  methods: {
+    getlist(currentPage, pageSize) {
+      let origin = (currentPage - 1) * pageSize;
+      let end = origin + pageSize;
+      this.currentList = this.articleList.slice(origin, end);
+      //   console.log(this.currentList);
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.pageSize = val;
+      this.currentPage = 1;
+      this.getlist(this.currentPage, this.pageSize);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.currentPage = val;
+      this.getlist(this.currentPage, this.pageSize);
+    },
+  },
+  mounted() {
+    this.$axios({
+      url: "/posts",
+    }).then((res) => {
+      console.log(res);
+      this.articleList = res.data.data;
+      this.getlist(this.currentPage, this.pageSize);
+    });
+  },
+};
 </script>
 
 <style lang="less" scoped>
@@ -103,7 +192,7 @@ export default {};
       display: block;
       width: 220px;
       height: 150px;
-      background-color: red;
+      //   background-color: red;
     }
   }
   .footer {
@@ -133,5 +222,76 @@ export default {};
       color: orange;
     }
   }
+}
+.singleList {
+  width: 100%;
+  padding: 20px 0;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  .left {
+    width: 220px;
+    height: 150px;
+    overflow: hidden;
+    flex-shrink: 0;
+    margin-right: 10px;
+    // background-color: red;
+    img {
+      width: 100%;
+    }
+  }
+  .right {
+    width: calc(100% - 230px);
+    h4 {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-bottom: 15px;
+      font-size: 18px;
+      font-weight: normal;
+    }
+    p {
+      margin-bottom: 15px;
+      line-height: 1.5;
+      font-size: 14px;
+      height: 63px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      color: #666;
+    }
+    .footer {
+      display: flex;
+      justify-content: space-between;
+
+      .userdetail {
+        width: 220px;
+        font-size: 12px;
+        color: #999;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        .user {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background-color: orange;
+          vertical-align: middle;
+        }
+        .name {
+          color: orange;
+        }
+      }
+      .like {
+        color: orange;
+      }
+    }
+  }
+}
+.pagination {
+  display: flex;
+  justify-content: center;
 }
 </style>
