@@ -55,6 +55,7 @@ export default {
     background:url(http://157.122.54.189:9095/assets/images/th03.jfif) center 0;
     height: 700px;
     min-width:1000px;
+    width:100% ; 
 
     .main{
         width:1000px;
