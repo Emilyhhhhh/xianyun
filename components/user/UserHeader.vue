@@ -129,7 +129,7 @@ export default {
                 }
             }
 
-            /deep/ .nuxt-link-exact-active{
+            /deep/ .nuxt-link-exact-active,.nuxt-link-active:not(:first-child){
                 background:#409eff;
                 color:#fff!important;
             }
