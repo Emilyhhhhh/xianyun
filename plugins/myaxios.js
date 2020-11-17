@@ -34,27 +34,3 @@ http.interceptors.response.use(
 
 // 添加请求拦截器
 // 每一个我们自己封装的axios请求都会经过这个拦截器
-// export default ({ store }) => {
-
-//     http.interceptors.request.use(function(config) {
-//         console.log('自己安装的axios拦截request');
-//         console.log(config)
-//             // 在发送请求之前做些什么:我要看看有没有token,如果有，则以请求头的方式进行传递
-//         if (store.state.userstore.userInfo.token) {
-//             console.log(store.state.userstore.userInfo.token);
-//             // if (token) {
-//             //     // 设置请求头
-//             //     config.headers.Authorization = token
-//             // }
-//         }
-//         return config;
-//     }, function(error) {
-//         // 对请求错误做些什么
-//         return Promise.reject(error);
-//     });
-
-// }
-
-
-
-// export default http
