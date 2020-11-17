@@ -9,14 +9,15 @@
         @mouseleave="moveout()"
       >
         {{ item.type }}
-        
-        <div class="showCity" ref="city" @mouseenter="moveInc(i)">
+
+        <div id="showCity" ref="city" @mouseenter="moveInc(i)" :style="{top:-i*41 +'px'}">
           <a
             href=""
             v-for="(item, i) in children"
             :key="i"
             class="showCity_item"
             @click="postCity(item.city)"
+            
           >
             <i class="i_index">{{ i + 1 }}</i
             ><strong>{{ item.city }}</strong
@@ -55,9 +56,9 @@ export default {
     };
   },
   methods: {
-      postCity(city){
-          this.$router.push('//post?city=' + city)
-      },
+    postCity(city) {
+      this.$router.push("//post?city=" + city);
+    },
     moveInc(i) {},
     moveout() {
       for (let i in this.$refs.city) {
@@ -83,81 +84,78 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.all {
-  .active {
-    font-size: 50px;
+#showCity {
+  display: none;
+  margin-left: -1px;
+  background: #fff;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  height: 202px;
+  width: 350px;
+  position: absolute;
+  top: 0px;
+  left: 260px;
+  padding: 10px 20px;
+  z-index: -1;
+  .showCity_item {
+    strong:hover {
+      text-decoration: underline;
+    }
+    span:hover {
+      text-decoration: underline;
+    }
+
+    cursor: pointer;
+    display: block;
+    width: 308px;
+    height: 36px;
+    line-height: 36px;
+    font-size: 14px;
+    .i_index {
+      font-size: 24px;
+      color: orange;
+      :hover {
+        text-decoration: underline;
+      }
+    }
+
+    strong {
+      margin: 0 10px;
+      color: orange;
+    }
+    span {
+      color: #999;
+    }
   }
+}
+.all {
   position: relative;
   .menus-w {
-    .showCity {
-      display: none;
-      margin-left: -1px;
-      background: #fff;
-      border: 1px solid #ddd;
-      box-sizing: border-box;
-      height: 202px;
-      width: 350px;
-      position: absolute;
-      top: 0px;
-      left: 260px;
-      padding: 10px 20px;
-     z-index: 1;
-      .showCity_item {
-        strong:hover {
-          text-decoration: underline;
-        }
-        span:hover {
-          text-decoration: underline;
-        }
-
-        cursor: pointer;
-        display: block;
-        width: 308px;
-        height: 36px;
-        line-height: 36px;
-        font-size: 14px;
-        .i_index {
-          font-size: 24px;
-          color: orange;
-          :hover {
-            text-decoration: underline;
-          }
-        }
-
-        strong {
-          margin: 0 10px;
-          color: orange;
-        }
-        span {
-          color: #999;
-        }
-      }
-    }
-    position: relative ;
-    border-top: 1px solid #ddd;
     width: 260px;
-
-    div:hover {
-      border-right-color: #fff;
-      color: orange;
-       &::after{
-        border-right: 1px solid orange;
-        border-top: 1px solid orange;
-      }
-    }
+    border: 1px solid #ddd;
+    border-right: none;
+    border-bottom: none;
+    box-shadow: 0 0 1px #f5f5f5;
+    z-index: 2;
     .menus {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
       height: 40px;
       line-height: 40px;
       border-bottom: 1px solid #ddd;
       border-right: 1px solid #ddd;
       padding: 0 20px;
       font-size: 14px;
-    //   position: relative;
+      position: relative;
       z-index: 2;
-
+      &::before{
+          display: none;
+        content: "";
+        width: 1px;
+        height: 40px;
+        border-left: 1px solid #fff;
+        position: absolute;
+        right: -2px;
+        top: 0;
+      }
       &::after {
         display: block;
         content: "";
@@ -166,9 +164,20 @@ export default {
         border-right: 1px solid #999;
         border-top: 1px solid #999;
         transform: rotate(45deg);
-        // position: absolute;
-        // right: 20px;
-        // top: 15px;
+        position: absolute;
+        right: 20px;
+        top: 15px;
+      }
+    }
+    .menus:hover {
+      border-right-color: red;
+      color: orange;
+      &::after {
+        border-right: 1px solid orange;
+        border-top: 1px solid orange;
+      }
+      &::before{
+          display: block;
       }
     }
 
