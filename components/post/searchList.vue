@@ -16,11 +16,18 @@
       </div>
       <!-- 三图 -->
       <div class="tripleList" v-else-if="item.images.length == 3">
-        <h4>{{ item.title }}</h4>
-        <p>
+        <h4>
+          <a :href="`/post/detail?id=${item.id}`" :title="item.title">{{
+            item.title
+          }}</a>
+        </h4>
+        <p @click="$router.push({ path: `/post/detail?id=${item.id}` })">
           {{ item.summary }}
         </p>
-        <div class="pic">
+        <div
+          class="pic"
+          @click="$router.push({ path: `/post/detail?id=${item.id}` })"
+        >
           <img :src="item.images[0]" alt="" />
           <img :src="item.images[1]" alt="" />
           <img :src="item.images[2]" alt="" />
@@ -30,7 +37,10 @@
             <i class="el-icon-location-information"></i>
             <span>{{ item.cityName }}</span>
             <span>by</span>
-            <div class="userstatus">
+            <div
+              class="userstatus"
+              @click="$router.push({ path: '/user/personal' })"
+            >
               <img
                 :src="baseURL + item.account.defaultAvatar"
                 alt=""
@@ -47,16 +57,26 @@
 
       <!-- 一图 -->
       <div class="singleList" v-else>
-        <div class="left">
+        <div
+          class="left"
+          @click="$router.push({ path: `/post/detail?id=${item.id}` })"
+        >
           <img :src="item.images[0]" alt="" />
         </div>
         <div class="right">
-          <h4>{{ item.title }}</h4>
-          <p>
+          <h4>
+            <a :href="`/post/detail?id=${item.id}`" :title="item.title">{{
+              item.title
+            }}</a>
+          </h4>
+          <p @click="$router.push({ path: `/post/detail?id=${item.id}` })">
             {{ item.summary }}
           </p>
           <div class="footer">
-            <div class="userdetail">
+            <div
+              class="userdetail"
+              @click="$router.push({ path: '/user/personal' })"
+            >
               <i class="el-icon-location-information"></i>
               <span>{{ item.cityName }}</span>
               <span>by</span>
@@ -186,13 +206,18 @@ export default {
   width: 100%;
   padding: 20px 0;
   border-bottom: 1px solid #eee;
-  /deep/h4 {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  h4 {
     margin-bottom: 15px;
-    font-size: 18px;
-    font-weight: normal;
+    a {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 18px;
+      font-weight: normal;
+      &:hover {
+        color: orange;
+      }
+    }
   }
   p {
     margin-bottom: 15px;
@@ -205,6 +230,7 @@ export default {
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     color: #666;
+    cursor: pointer;
   }
   .pic {
     display: flex;
@@ -214,6 +240,7 @@ export default {
       display: block;
       width: 220px;
       height: 150px;
+      cursor: pointer;
       //   background-color: red;
     }
   }
@@ -228,16 +255,19 @@ export default {
       display: flex;
       justify-content: space-evenly;
       align-items: center;
-      .user {
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        border-radius: 50%;
-        background-color: orange;
-        vertical-align: middle;
-      }
-      .name {
-        color: orange;
+      .userstatus {
+        cursor: pointer;
+        .user {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background-color: orange;
+          vertical-align: middle;
+        }
+        .name {
+          color: orange;
+        }
       }
     }
     .like {
@@ -259,17 +289,23 @@ export default {
     // background-color: red;
     img {
       width: 100%;
+      cursor: pointer;
     }
   }
   .right {
     width: calc(100% - 230px);
     h4 {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
       margin-bottom: 15px;
-      font-size: 18px;
-      font-weight: normal;
+      a {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 18px;
+        font-weight: normal;
+        &:hover {
+          color: orange;
+        }
+      }
     }
     p {
       margin-bottom: 15px;
@@ -282,6 +318,7 @@ export default {
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       color: #666;
+      cursor: pointer;
     }
     .footer {
       display: flex;
@@ -294,16 +331,19 @@ export default {
         display: flex;
         justify-content: space-evenly;
         align-items: center;
-        .user {
-          display: inline-block;
-          width: 16px;
-          height: 16px;
-          border-radius: 50%;
-          background-color: orange;
-          vertical-align: middle;
-        }
-        .name {
-          color: orange;
+        .userstatus {
+          cursor: pointer;
+          .user {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: orange;
+            vertical-align: middle;
+          }
+          .name {
+            color: orange;
+          }
         }
       }
       .like {
