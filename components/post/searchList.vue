@@ -10,8 +10,12 @@
       >
     </div>
     <div v-for="(item, index) in currentList" :key="index">
+      <!-- 无相关攻略 -->
+      <div class="noList" v-if="item.msg">
+        {{ item.msg }}
+      </div>
       <!-- 三图 -->
-      <div class="tripleList" v-if="item.images.length == 3">
+      <div class="tripleList" v-else-if="item.images.length == 3">
         <h4>{{ item.title }}</h4>
         <p>
           {{ item.summary }}
@@ -40,6 +44,7 @@
           <span class="like">{{ item.like }} 赞</span>
         </div>
       </div>
+
       <!-- 一图 -->
       <div class="singleList" v-else>
         <div class="left">
@@ -80,7 +85,7 @@
         :page-sizes="[3, 5, 10, 15]"
         :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="articleList.length"
+        :total="reList ? reList.length : articleList.length"
       >
       </el-pagination>
     </div>
@@ -90,6 +95,7 @@
 <script>
 import { http } from "@/plugins/myaxios.js";
 export default {
+  props: ["reList"],
   data() {
     return {
       articleList: "",
@@ -100,12 +106,28 @@ export default {
       currentList: "",
     };
   },
+  watch: {
+    reList() {
+      if (this.reList) {
+        this.currentList = this.reList;
+      } else {
+        this.getlist(this.currentPage, this.pageSize);
+      }
+    },
+  },
   methods: {
     getlist(currentPage, pageSize) {
       let origin = (currentPage - 1) * pageSize;
       let end = origin + pageSize;
-      this.currentList = this.articleList.slice(origin, end);
-      //   console.log(this.currentList);
+
+      if (this.reList) {
+        console.log(1);
+        this.currentList = this.reList.slice(origin, end);
+      } else {
+        console.log(2);
+        this.currentList = this.articleList.slice(origin, end);
+      }
+      console.log(this.currentList);
     },
     handleSizeChange(val) {
       //   console.log(`每页 ${val} 条`);
@@ -289,6 +311,11 @@ export default {
       }
     }
   }
+}
+.noList {
+  font-size: 24px;
+  color: #666;
+  text-align: center;
 }
 .pagination {
   display: flex;
