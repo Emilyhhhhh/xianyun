@@ -1,6 +1,6 @@
 
 <template>
-  <div class="container" title="旅游攻略模块首页文件">
+  <div class="container">
     <el-row>
       <!-- 右部分 -->
       <el-col :span="6" class="left">
