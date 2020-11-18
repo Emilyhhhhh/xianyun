@@ -96,7 +96,7 @@ export default {
   top: 0px;
   left: 260px;
   padding: 10px 20px;
-  z-index: -1;
+ z-index: 1;
   .showCity_item {
     strong:hover {
       text-decoration: underline;
@@ -155,6 +155,7 @@ export default {
         position: absolute;
         right: -2px;
         top: 0;
+        z-index: 2;
       }
       &::after {
         display: block;
