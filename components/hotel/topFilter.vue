@@ -1,5 +1,6 @@
 <template>
-    <div class="topFilter" title="酒店搜索头部组件">
+<!-- 酒店搜索头部组件 -->
+    <div class="topFilter">
     <!-- 面包屑 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item>酒店</el-breadcrumb-item>
@@ -169,11 +170,14 @@ export default {
    //查看价格
     onSubmit(){
       console.log(this.form);
-      this.$axios({
-        url:'/hotels'
-      }).then(res=>{
-        console.log(res);
-      })
+      let enterTime=this.form.date[0]
+      let leftTime=this.form.date[1]
+      this.$router.push({ path: "/hotel",
+      query:{
+        enterTime,
+        leftTime,
+        cityName:this.form.city
+      }})
     },
 
     // 筛选城市
@@ -187,13 +191,15 @@ export default {
         }
       }).then(res=>{
         console.log(res);
-        // 拼接需要显示的数组
+        // 拼接需要显示的城市名字数组
         let showList=res.data.data.filter(city=>{
           console.log(city);
           return city.sort
         }).map(v=>{
           return {value:v.name}
         })
+
+        
         cb(showList)
          if(showList.length==0){
           this.$confirm('没有这个城市', '提示', {
