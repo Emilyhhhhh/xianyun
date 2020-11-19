@@ -40,6 +40,7 @@
             class="recommand-item"
             v-for="(item, key) in recommand"
             :key="key"
+            @click="tothe(item.id)"
           >
             <div class="left" v-if="item.images.length > 0">
               <img :src="item.images[0]" alt="" />
@@ -79,6 +80,12 @@ export default {
       let target = document.getElementById("target");
       window.scroll(0, target.offsetTop + 76);
     },
+    tothe(id) {
+      this.$router.push({ path: "/post/detail?id=" + id });
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
+    },
   },
   mounted() {
     let id = this.$route.query.id;
@@ -96,7 +103,7 @@ export default {
       url: "/posts/recommend",
       params: { id },
     }).then((result) => {
-      //   console.log(result);
+      console.log(result);
       this.recommand = result.data.data;
     });
   },
@@ -174,6 +181,7 @@ export default {
     display: flex;
     padding: 20px 0;
     border-bottom: 1px solid #ddd;
+    cursor: pointer;
     .left {
       width: 100px;
       height: 80px;
