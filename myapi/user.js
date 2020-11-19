@@ -52,6 +52,17 @@ export const airsSearch = (name) => {
     })
 }
 
+//展示在酒店的搜索的区域位置
+export const scenicsList = (name) => {
+    return http({
+        url: '/cities',
+        // 注意data传参的格式，不然会报400
+        params: {
+            name
+        }
+    })
+}
+
 //推荐机票：首页底部的特价机票
 export const airsSale = () => {
     return http({
