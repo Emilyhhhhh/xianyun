@@ -11,7 +11,7 @@
           </el-breadcrumb>
           <h1>{{ article.title }}</h1>
           <div class="postinfo">
-            <span>发布时间：{{ article.updated_at | dateHandle }}</span>
+            <span>发布时间：{{ article.created_at | dateHandle }}</span>
             <span>阅读:{{ article.watch }}</span>
           </div>
           <div class="art" v-html="article.content"></div>
@@ -22,14 +22,16 @@
                 >评论({{ article.comments.length }})</span
               >
             </div>
-            <div class="share">
+            <div class="share" @click="$message.warning('暂不支持分享')">
               <i class="el-icon-share"></i>
               <span>分享</span>
             </div>
           </div>
         </div>
         <!-- 评论 -->
-        <div class="comment"></div>
+        <div class="comment" id="target">
+          <comments :data="article" @turnto="turnto"></comments>
+        </div>
       </el-col>
       <el-col :span="7">
         <div class="asides">
@@ -57,7 +59,12 @@
 </template>
 
 <script>
+import comments from "@/components/post/comment";
+import dateHandle from "@/myapi/dateHandle";
 export default {
+  components: {
+    comments,
+  },
   data() {
     return {
       article: "",
@@ -65,20 +72,12 @@ export default {
     };
   },
   filters: {
-    dateHandle: function (date) {
-      console.log(date);
-      let time = new Date(date);
-      let now =
-        time.getFullYear() +
-        "-" +
-        (time.getMonth() + 1) +
-        "-" +
-        time.getDate() +
-        " " +
-        time.getHours() +
-        ":" +
-        time.getMinutes();
-      return now;
+    dateHandle,
+  },
+  methods: {
+    turnto() {
+      let target = document.getElementById("target");
+      window.scroll(0, target.offsetTop + 76);
     },
   },
   mounted() {
@@ -91,14 +90,13 @@ export default {
     }).then((res) => {
       console.log(res);
       this.article = res.data.data[0];
-      console.log(this.article);
     });
     //获取推荐文章
     this.$axios({
       url: "/posts/recommend",
       params: { id },
     }).then((result) => {
-      console.log(result);
+      //   console.log(result);
       this.recommand = result.data.data;
     });
   },
@@ -136,6 +134,7 @@ export default {
       align-items: center;
       flex-direction: column;
       margin-right: 30px;
+      cursor: pointer;
       i {
         font-size: 44px;
         color: orange;
@@ -151,6 +150,7 @@ export default {
       justify-content: center;
       align-items: center;
       flex-direction: column;
+      cursor: pointer;
       span {
         margin-top: 5px;
         font-size: 14px;

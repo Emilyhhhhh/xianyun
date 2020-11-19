@@ -16,11 +16,11 @@ import { Message } from "element-ui";
 //需要export default
 
 // 这里的参数可以接收nuxt的参数，nuxt.xx
-export default function({ $axios, redirect, store }) {
+export default function ({ $axios, redirect, store }) {
 
     // 通过正则判断需要 token 的 url，然后设置请求拦截，在请求需要 token 的路由时加上 token
     const checkUrl = (url) => (
-        /^\/comments(\/like)?$/.test(url) ||
+        // /^\/comments(\/like)?$/.test(url) ||
         /^\/airorders(\/(pay|checkpay))?$/.test(url) ||
         /^airorders(\/(\d{0,4}))$/.test(url)
     )
