@@ -1,12 +1,16 @@
 <template>
   <div class="comment" v-if="data">
     <h4>评论</h4>
+    <el-tag closable type="info" @close="hideTag" v-if="replyid">
+      回复@{{ nickname }}
+    </el-tag>
     <el-input
       type="textarea"
       :rows="3"
       placeholder="请输入内容"
       v-model="input"
       resize="none"
+      style="margin-top: 5px"
     >
     </el-input>
     <div class="submit">
@@ -103,7 +107,9 @@
               @mouseenter="show($event)"
               @mouseleave="hide($event)"
             >
-              <span @click="reply(item.id)">回复</span>
+              <span @click="getreply([item.id, item.account.nickname])"
+                >回复</span
+              >
             </div>
           </div>
         </div>
@@ -142,6 +148,7 @@ export default {
       comList: "",
       comTotal: 0,
       replyid: "",
+      nickname: "",
       //输入框
       input: "",
       pics: [],
@@ -158,13 +165,14 @@ export default {
   },
   methods: {
     //回复
-    reply(id) {
-      this.replyid = id;
+    getreply(data) {
+      this.replyid = data[0];
+      this.nickname = data[1];
       this.$emit("turnto");
     },
-    getreply(data) {
-      this.replyid = data;
-      this.$emit("turnto");
+    //回复框
+    hideTag() {
+      this.replyid = "";
     },
     show(e) {
       e.target.firstChild.style.display = "block";

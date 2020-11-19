@@ -43,7 +43,9 @@
             @mouseenter="show($event)"
             @mouseleave="hide($event)"
           >
-            <span @click="replyhandle(secc.id)">回复</span>
+            <span @click="replyhandle([secc.id, secc.account.nickname])"
+              >回复</span
+            >
           </div>
         </div>
       </div>
