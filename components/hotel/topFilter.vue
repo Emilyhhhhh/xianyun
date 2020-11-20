@@ -17,6 +17,7 @@
       :trigger-on-focus="false"
       :highlight-first-item='true'
       @select="handleSelect"
+      :autofocus='true'
     ></el-autocomplete>
       </el-form-item>
 
@@ -199,7 +200,6 @@ export default {
           return {value:v.name}
         })
 
-        
         cb(showList)
          if(showList.length==0){
           this.$confirm('没有这个城市', '提示', {
