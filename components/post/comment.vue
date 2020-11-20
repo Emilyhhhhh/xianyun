@@ -11,6 +11,7 @@
       v-model="input"
       resize="none"
       style="margin-top: 5px"
+      ref="input"
     >
     </el-input>
     <div class="submit">
@@ -20,38 +21,16 @@
           :action="$axios.defaults.baseURL + '/upload'"
           name="files"
           :on-success="uploadImg"
+          :on-preview="handlePictureCardPreview"
+          :on-remove="handleRemove"
+          :on-exceed="handleFile"
+          :on-error="handleError"
+          :before-upload="handleLaw"
           list-type="picture-card"
+          :limit="3"
+          ref="upload"
         >
           <i slot="default" class="el-icon-plus"></i>
-          <div slot="file" slot-scope="{ file }">
-            <img
-              class="el-upload-list__item-thumbnail"
-              :src="file.url"
-              alt=""
-            />
-            <span class="el-upload-list__item-actions">
-              <span
-                class="el-upload-list__item-preview"
-                @click="handlePictureCardPreview()"
-              >
-                <i class="el-icon-zoom-in"></i>
-              </span>
-              <span
-                v-if="!disabled"
-                class="el-upload-list__item-delete"
-                @click="handleDownload(file)"
-              >
-                <i class="el-icon-download"></i>
-              </span>
-              <span
-                v-if="!disabled"
-                class="el-upload-list__item-delete"
-                @click="handleRemove(file)"
-              >
-                <i class="el-icon-delete"></i>
-              </span>
-            </span>
-          </div>
         </el-upload>
         <el-dialog :visible.sync="dialogVisible">
           <img width="100%" :src="dialogImageUrl" alt="" />
@@ -156,6 +135,7 @@ export default {
       dialogImageUrl: "",
       dialogVisible: false,
       disabled: false,
+      myfileList: [],
       // 分页
       currentPage: 1,
       pageSize: 3,
@@ -166,8 +146,11 @@ export default {
   methods: {
     //回复
     getreply(data) {
-      this.replyid = data[0];
-      this.nickname = data[1];
+      if (data) {
+        this.replyid = data[0];
+        this.nickname = data[1];
+      }
+      this.$refs.input.focus();
       this.$emit("turnto");
     },
     //回复框
@@ -181,20 +164,84 @@ export default {
       e.target.firstChild.style.display = "none";
     },
     // 上传
-    handleRemove(file) {
-      console.log(file);
-    },
-    handlePictureCardPreview() {
-      console.log(file);
+    //放大
+    handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
-    handleDownload(file) {
-      console.log(file);
-    },
+    //上传图片
     uploadImg(res, file) {
-      console.log(res, file);
-      this.pics.push(res);
+      this.pics.push(res[0]);
+    },
+    //删除处理
+    handleRemove(file) {
+      if (file.response) {
+        this.pics.forEach((item, key) => {
+          if (item.id === file.response[0].id) {
+            this.pics.splice(key, 1);
+          }
+        });
+      }
+    },
+    handleError() {
+      this.$message.error("上传失败，请重新上传");
+    },
+    //超出文件个数时
+    handleFile() {
+      this.$confirm("图片数量不能超过三张", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then()
+        .catch();
+    },
+    //上传文件限制
+    handleLaw(file) {
+      let result = true;
+      //判断文件格式
+      if (
+        file.type != "image/gif" &&
+        file.type != "image/jpeg" &&
+        file.type != "image/png"
+      ) {
+        this.$confirm("请上传jpg、png或gif格式的图片", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+          .then()
+          .catch();
+        result = false;
+      }
+      //判断同名同大小照片
+      this.pics.forEach((item) => {
+        if (
+          file.name == item.name &&
+          Math.floor(file.size / 1000) == Math.floor(item.size)
+        ) {
+          this.$confirm("不能上传重复的图片", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning",
+          })
+            .then()
+            .catch();
+          result = false;
+        }
+      });
+      //判断图片大小
+      if (file.size > 5242880) {
+        this.$confirm("请上传5MB以下的图片", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+          .then()
+          .catch();
+        result = false;
+      }
+      return result;
     },
     // 分页
     handleSizeChange(val) {
@@ -211,6 +258,10 @@ export default {
     },
     //提交评论
     submitCom() {
+      if (!this.input.trim()) {
+        this.$message.warning("请输入评论");
+        return;
+      }
       this.$axios({
         method: "post",
         url: "/comments",
@@ -237,11 +288,14 @@ export default {
           this.getcom(this.start, this.pageSize);
           this.input = "";
           this.replyid = "";
+          this.pics = [];
+          this.$refs.upload.clearFiles();
         }
       });
     },
     // 获取评论
     getcom(start, size) {
+      console.log(this.data.id);
       this.$axios({
         url: "/posts/comments",
         params: {
@@ -258,7 +312,9 @@ export default {
   },
   mounted() {
     // 获取评论
-    this.getcom(this.start, this.pageSize);
+    setTimeout(() => {
+      this.getcom(this.start, this.pageSize);
+    }, 200);
   },
 };
 </script>
@@ -269,6 +325,32 @@ export default {
     font-weight: 400;
     font-size: 18px;
     margin-bottom: 20px;
+  }
+  /deep/ .el-upload-list__item,
+  /deep/.el-upload--picture-card {
+    width: 110px;
+    height: 110px;
+    line-height: 110px;
+    div {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  /deep/.el-upload-list__item-actions {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    span {
+      margin: 0;
+    }
+  }
+  /deep/.el-upload-list__item-thumbnail {
+    object-fit: cover;
+  }
+  /deep/.el-icon-check {
+    position: absolute;
+    top: -1px;
+    right: 39%;
   }
   .submit {
     display: flex;

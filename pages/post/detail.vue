@@ -16,7 +16,7 @@
           </div>
           <div class="art" v-html="article.content"></div>
           <div class="postctrl">
-            <div class="comm">
+            <div class="comm" @click="turnto">
               <i class="el-icon-edit-outline"></i>
               <span v-if="article.comments"
                 >评论({{ article.comments.length }})</span
@@ -89,21 +89,19 @@ export default {
   },
   mounted() {
     let id = this.$route.query.id;
-    console.log(id);
     //获取文章详情
     this.$axios({
       url: "/posts",
       params: { id },
     }).then((res) => {
-      console.log(res);
       this.article = res.data.data[0];
+      console.log(res);
     });
     //获取推荐文章
     this.$axios({
       url: "/posts/recommend",
       params: { id },
     }).then((result) => {
-      console.log(result);
       this.recommand = result.data.data;
     });
   },
@@ -191,6 +189,8 @@ export default {
       margin-right: 10px;
       img {
         width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
     }
     .right {
@@ -210,6 +210,7 @@ export default {
         -webkit-box-orient: vertical;
       }
       .bott {
+        margin-top: 20px;
         font-size: 12px;
         color: #999;
       }
