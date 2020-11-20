@@ -125,7 +125,7 @@ export default {
   .art {
     width: 100%;
 
-    /deep/img[src^="http"] {
+    /deep/img {
       width: 100%;
     }
   }

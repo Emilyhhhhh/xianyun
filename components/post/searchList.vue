@@ -89,9 +89,9 @@
                 <span class="name">{{ item.account.nickname }}</span>
               </div>
               <i class="el-icon-view"></i>
-              <span class="read">{{ item.watch }}</span>
+              <span class="read">{{ item.watch ? item.watch : 0 }}</span>
             </div>
-            <span class="like">{{ item.like }} 赞</span>
+            <span class="like">{{ item.like ? item.like : 0 }} 赞</span>
           </div>
         </div>
       </div>
