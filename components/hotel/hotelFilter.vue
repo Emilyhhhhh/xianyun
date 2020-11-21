@@ -25,7 +25,7 @@
 
         </el-col>
         <el-col :span="4"><div class="filter">住宿类型</div>
-        <el-dropdown placement='top' @command="handleHoteltype">
+        <el-dropdown placement='top' @command="handleHoteltype"  :hide-on-click="false">
         <span class="el-dropdown-link">
           <span class="dropdown-link-text">
              {{params.hoteltype.length>0?`已选${params.hoteltype.length}项`:'不限'}}
@@ -42,10 +42,10 @@
         </el-col>
 
         <el-col :span="4"><div class="filter">酒店设施</div>
-        <el-dropdown placement='top' @command="handleHotelbrand">
+        <el-dropdown placement='top' @command="handleHotelasset"  :hide-on-click="false">
         <span class="el-dropdown-link">
           <span class="dropdown-link-text">
-              {{params.hotelbrand.length>0?`已选${params.hotelbrand.length}项`:'不限'}}
+              {{params.hotelasset.length>0?`已选${params.hotelasset.length}项`:'不限'}}
           </span>
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
@@ -53,16 +53,16 @@
           <el-dropdown-item :command="i" 
            v-for="(v,i) in hotelFilterList.assets" :key="i">
           <i class="iconfont"
-          :class="params.hotelbrand.indexOf(v.id)!=-1 ?'iconright-1':'iconcircle'" ></i>{{v.name}}</el-dropdown-item>
+          :class="params.hotelasset.indexOf(v.id)!=-1 ?'iconright-1':'iconcircle'" ></i>{{v.name}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
         </el-col>
 
         <el-col :span="4"><div class="filter">酒店品牌</div>
-        <el-dropdown placement='top' @command="handleHotelasset">
+        <el-dropdown placement='top' @command="handleHotelbrand" :hide-on-click="false">
         <span class="el-dropdown-link">
           <span class="dropdown-link-text">
-             {{params.hotelasset.length>0?`已选${params.hotelasset.length}项`:'不限'}}
+             {{params.hotelbrand.length>0?`已选${params.hotelbrand.length}项`:'不限'}}
           </span>
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
@@ -70,7 +70,7 @@
           <el-dropdown-item :command="i" 
            v-for="(v,i) in hotelFilterList.brands" :key="i">
           <i class="iconfont"
-          :class="params.hotelasset.indexOf(v.id)!=-1 ?'iconright-1':'iconcircle'" ></i>{{v.name}}</el-dropdown-item>
+          :class="params.hotelbrand.indexOf(v.id)!=-1 ?'iconright-1':'iconcircle'" ></i>{{v.name}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
         </el-col>
@@ -94,8 +94,9 @@ export default {
           params:{
             hotellevel:[],
             hoteltype:[],
-            hotelbrand:[],
             hotelasset:[],
+            hotelbrand:[],
+            price_lt:''
           }
         }
     },
@@ -107,49 +108,45 @@ export default {
       },
       priceChange(value){
         console.log(value);
+        this.params.price_lt=value
+      },
+
+      // 封装酒店筛选的步骤
+      handlefilter(arr,index){
+        let arrIndex
+        // 找的是id  所以加1
+        if(arr.indexOf(index+1)!=-1 ){
+          // 找到在新数组的存储的下标
+          arrIndex=arr.indexOf(index+1)
+          console.log(arrIndex);
+          arr.splice(arrIndex,1)
+        }else{
+          arr.push(index+1)
+        }
+        this.$emit('params',this.params)
       },
 
       // 点击下拉选项时触发：判断点击时获取的下标是否在hotellevel数组中，如果有就说明已经勾选过了，需要取反，去掉数组的成员，反之则把这个成员加入数组中，
       handleHotellevel(command) {
-        let index
-        // 找的是id  所以加1
-        if(this.params.hotellevel.indexOf(command+1)!=-1 ){
-          // 找到在新数组的存储的下标
-          index=this.params.hotellevel.indexOf(command+1)
-          console.log(index);
-          this.params.hotellevel.splice(index,1)
-        }else{
-          this.params.hotellevel.push(command+1)
-        }
+        this.handlefilter(this.params.hotellevel,command)
       },
       handleHoteltype(command){
-        let index
-        if(this.params.hoteltype.indexOf(command+1)!=-1 ){
-          index=this.params.hoteltype.indexOf(command+1)
-          this.params.hoteltype.splice(index,1)
-        }else{
-          this.params.hoteltype.push(command+1)
-        }
+        this.handlefilter(this.params.hoteltype,command)
       },
-       handleHotelbrand(command){
-        let index
-        if(this.params.hotelbrand.indexOf(command+1)!=-1 ){
-          index=this.params.hotelbrand.indexOf(command+1)
-          this.params.hotelbrand.splice(index,1)
-        }else{
-          this.params.hotelbrand.push(command+1)
-        }
+      handleHotelasset(command){
+      this.handlefilter(this.params.hotelasset,command)
       },
-       handleHotelasset(command){
-        let index
-        console.log(this.hotelFilterList);
-        if(this.params.hotelasset.indexOf(command+1)!=-1 ){
-          index=this.params.hotelasset.indexOf(command+1)
-          this.params.hotelasset.splice(index,1)
+      // 这个 下标不一样不能封装
+      handleHotelbrand(command){
+         let arrIndex
+        if(this.params.hotelbrand.indexOf(command+4)!=-1 ){
+          arrIndex=this.params.hotelbrand.indexOf(command+4)
+          this.params.hotelbrand.splice(arrIndex,1)
         }else{
-          this.params.hotelasset.push(command+1)
+          this.params.hotelbrand.push(command+4)
         }
-      }
+        this.$emit('params',this.params)
+      },
     },
 }
 </script>
