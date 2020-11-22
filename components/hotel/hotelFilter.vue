@@ -96,16 +96,36 @@ export default {
             hoteltype:[],
             hotelasset:[],
             hotelbrand:[],
-            price_lt:''
+            price_lt:4000
           }
         }
+    },
+    watch: {
+      params:{
+        handler(){
+          this.change()
+           
+      },
+      deep:true
+    }
     },
     methods: {
        //重置筛选器
       revoke() {
         console.log(this.$route.query.cityName);
-      this.$router.push({ path: "/hotel?cityName="+this.city})
+        for (const key in this.params) {
+          console.log(key);
+          if(key!='price_lt'){
+            this.params[key]=[]
+          }
+        }
+        console.log(this.params);
+        if(this.$route.query){
+            this.$router.push({ path: "/hotel?cityName="+this.city})
+        }
+      this.$emit('revoke')
       },
+      // 价格改变时触发
       priceChange(value){
         console.log(value);
         this.params.price_lt=value
@@ -123,8 +143,49 @@ export default {
         }else{
           arr.push(index+1)
         }
-        this.$emit('params',this.params)
+        console.log(arr);
       },
+
+      // 修改数据添加到url上
+      change() {
+      let str=''
+      if(this.params.price_lt){
+      str+= "price_lt=" + this.params.price_lt + "&";
+      }
+      console.log(str);
+      if (this.params.hotellevel) {
+        this.params.hotellevel.forEach((e, index) => {
+          str += "hotellevel=" + e + "&";
+        });
+      }
+      console.log(str);
+
+      if (this.params.hoteltype) {
+        this.params.hoteltype.forEach((e, index) => {
+          str += "hoteltype=" + e + "&";
+        });
+      }
+      console.log(str);
+
+      if (this.params.hotelbrand) {
+        this.params.hotelbrand.forEach((e, index) => {
+          str += "hotelbrand=" + e + "&";
+        });
+      }
+      console.log(str);
+
+      if (this.params.hotelasset) {
+        this.params.hotelasset.forEach((e, index) => {
+          str += "hotelasset=" + e + "&";
+        });
+      }
+      console.log(str);
+
+      let cityName=this.$route.query.cityName
+      console.log(str,'修改数据添加到url上');
+      this.$router.replace(`/hotel?cityName=${cityName}&` + str);
+      this.$emit('changeUrl')
+    },
 
       // 点击下拉选项时触发：判断点击时获取的下标是否在hotellevel数组中，如果有就说明已经勾选过了，需要取反，去掉数组的成员，反之则把这个成员加入数组中，
       handleHotellevel(command) {
@@ -145,7 +206,6 @@ export default {
         }else{
           this.params.hotelbrand.push(command+4)
         }
-        this.$emit('params',this.params)
       },
     },
 }

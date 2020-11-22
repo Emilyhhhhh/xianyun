@@ -57,13 +57,13 @@
 
    <!-- 酒店筛选 -->
     <hotelFilter v-if="hotelFilterList" :hotelFilterList='hotelFilterList' 
-    :city='city' />
-
+    :city='city' @changeUrl='changeUrl' @revoke='revoke' />
 
     <!-- 酒店列表 -->
     <div v-if="hotelList && hotelList.length > 0">
       <hotelList :hotelList='hotelList' />
     </div>
+    <p  v-if="hotelList && hotelList.length == 0">暂无符合条件的酒店</p>
 
     <!-- 分页 -->
       <el-row style="margin:10px">
@@ -96,6 +96,12 @@ export default {
       total:0,
       city:'',    //广州
       marker:[],  //存坐标
+      str:'',                 
+      hotellevelArr: [],      // 住宿等级
+      hoteltypeArr :[],       // 住宿类型
+      hotelassetArr: [],      // 酒店设施
+      hotelbrandArr: [],      // 酒店品牌
+      sign:true
     }
   },
   components: {
@@ -103,19 +109,31 @@ export default {
   },
   watch: {
     '$route':{
-      handler(){
+      async handler(){
         //路由变化时刷新城市区域和地图
-        this.getScenicsList()   
+        console.log('route监听');
+        
+       if(this.cityId){
+         await this.getcityfilter()
+       }
+       await this.getScenicsList()   
+
+      
         this.createdMap()  
       }
     },
-    cityId(){
+
+    async cityId(){
+     
       // 城市变化时过滤
-      this.getcityfilter()
+        console.log('cityId监听');
+      await this.getcityfilter()
     },
-    hotelList(){
-      // 新的酒店列表变化时更新地图
-        this.createdMap()
+    async hotelList(){
+        console.log('hotelList监听');
+      console.log(this.$route);
+      // 新的酒店列表变化时更新标记
+      await  this.creatMarker()
     }
   },
   methods: {
@@ -143,6 +161,8 @@ export default {
     },
     // 头部过滤：获取每个城市的风景区地点
     async getScenicsList(){
+       this.loading=true
+      console.log(this.$route,'route');
         if(this.$route.query.cityName){
             console.log(this.$route.query.cityName.split('市')[0]);
             let name=this.$route.query.cityName.split('市')[0]
@@ -155,13 +175,112 @@ export default {
                this.cityId=res.data.data[0].id
                console.log(this.cityId);
             }
-            // console.log(cityId);
             console.log(this.scenics,'区域列表');
         }
     },
+    // 封装根据城市id获取酒店列表
+   async getCityById(params){
+     return this.$axios({
+        url:'/hotels',
+        params
+      }).then(res=>{
+         this.hotelList=res.data.data
+         this.total=res.data.total
+         console.log(this.hotelList,'城市过滤');
+      })
+    },
+
+    async changeUrl(){
+      console.log('被触发了');
+      await this.getcityfilter()
+
+    },
+    // 重新刷新
+    revoke(){
+      if(this.cityId){
+
+        this.getcityfilter()
+        this.sign=false
+      }
+    },
+     // 参数过滤
+    setStr(){
+      
+      if (this.$route.query.hotellevel) {
+        this.hotellevelArr = [...this.$route.query.hotellevel];
+      }
+      if (this.$route.query.hoteltype) {
+        this.hoteltypeArr = [...this.$route.query.hoteltype];
+      }
+      if (this.$route.query.hotelasset) {
+        this.hotelassetArr = [...this.$route.query.hotelasset];
+      }
+      if (this.$route.query.hotelbrand) {
+        this.hotelbrandArr = [...this.$route.query.hotelbrand];
+      }
+      // 判断住宿等级是否是数组
+      let str=''
+      if (this.hotellevelArr) {
+        this.hotellevelArr.forEach((e) => {
+          str += "hotellevel_in=" + e + "&";
+        });
+      }
+      if (this.hoteltypeArr) {
+        this.hoteltypeArr.forEach((e) => {
+          str += "hoteltype_in=" + e + "&";
+        });
+      }
+
+      if (this.hotelassetArr) {
+        this.hotelassetArr.forEach((e) => {
+          str += "hotelasset_in=" + e + "&";
+        });
+      }
+
+
+      if (this.hotelbrandArr) {
+        this.hotelbrandArr.forEach((e) => {
+          str += "hotelbrand_in=" + e + "&";
+        });
+      }
+
+
+      if (this.$route.query.price_lt) {
+        str += "price_lt=" + this.$route.query.price_lt + "&";
+      }
+      // console.log(str);
+
+
+      if(this.$route.query.cityName){
+        str += "city=" + this.cityId;
+      }
+      // console.log(str);
+
+      return str;
+    },   
+    // 开始城市过滤
+    async getcityfilter(){
+      this.loading=true
+      let params=this.sign?await this.setStr():"city=" + this.cityId
+      console.log(params,'进入过滤');
+      if(!params){
+        params="city=" + this.cityId
+      }
+    return this.$axios({
+        url:'/hotels?'+params
+    }).then(res=>{
+      console.log(res);
+         this.hotelList=res.data.data
+         this.total=res.data.total
+        console.log(this.hotelList,'城市过滤');
+        this.sign=true
+    })
+    },
+
     // 封装地图创建
     createdMap(){
-      console.log('经过了地图');
+
+      // console.log('经过了地图');
           this.map = new AMap.Map('mapBox',{
            zoom: 11, //级别
            // center: [113.3245904, 23.1066805], //中心点坐标
@@ -197,9 +316,12 @@ export default {
 
     //创建点标记
     creatMarker(){
-      console.log(this.marker);
+      //  this.loading=true
+
+      // console.log(this.marker,'进入creatMarker');
       if(this.hotelList){
         // 清空数组
+        this.map.remove(this.marker);
         this.marker.length=0
         this.hotelList.forEach((v,i)=>{
           // 创建点标记
@@ -214,34 +336,26 @@ export default {
           this.marker.push(res)
         })
       }
+        console.log( this.map);
+
+          // console.log(this.marker);
         // 将创建的点标记添加到已有的地图实例：
-        this.loading=false
         this.map.add(this.marker);
+        console.log( this.map);
+        // if()
+        setTimeout(()=>{
+          this.loading=false
+        },1000)
+        
         this.map.setFitView()
         
     },
-       
-    // 开始城市过滤
-    getcityfilter(){
-      this.$axios({
-        url:'/hotels',
-      params:{
-        city:this.cityId
-      }
-    }).then(res=>{
-      console.log(res);
-      this.hotelList=res.data.data
-         this.total=res.data.total
-        console.log(this.hotelList,'城市过滤');
-        
-    })
-    }
   },
 
-  mounted () {
+  async mounted () {
      // 获取每个城市的风景区地点
     this.getScenicsList()
-    
+   
     // 发送酒店选项的请求
     this.$axios({
       url:'/hotels/options',
@@ -250,12 +364,6 @@ export default {
       console.log(this.hotelFilterList,'酒店过滤');
     })
   
-
-    this.$axios({
-        url:'/cities',
-    }).then(res=>{
-      console.log(res,'全部数据');
-    })
 
     // -------------------------------------------------
     window.onLoad  = ()=>{
