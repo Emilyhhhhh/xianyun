@@ -112,14 +112,14 @@ export default {
     methods: {
        //重置筛选器
       revoke() {
-        console.log(this.$route.query.cityName);
+       
         for (const key in this.params) {
-          console.log(key);
+         
           if(key!='price_lt'){
             this.params[key]=[]
           }
         }
-        console.log(this.params);
+      
         if(this.$route.query){
             this.$router.push({ path: "/hotel?cityName="+this.city})
         }
@@ -127,7 +127,7 @@ export default {
       },
       // 价格改变时触发
       priceChange(value){
-        console.log(value);
+       ;
         this.params.price_lt=value
       },
 
@@ -138,12 +138,12 @@ export default {
         if(arr.indexOf(index+1)!=-1 ){
           // 找到在新数组的存储的下标
           arrIndex=arr.indexOf(index+1)
-          console.log(arrIndex);
+         
           arr.splice(arrIndex,1)
         }else{
           arr.push(index+1)
         }
-        console.log(arr);
+      
       },
 
       // 修改数据添加到url上
@@ -152,37 +152,36 @@ export default {
       if(this.params.price_lt){
       str+= "price_lt=" + this.params.price_lt + "&";
       }
-      console.log(str);
+     
       if (this.params.hotellevel) {
         this.params.hotellevel.forEach((e, index) => {
           str += "hotellevel=" + e + "&";
         });
       }
-      console.log(str);
-
+  
       if (this.params.hoteltype) {
         this.params.hoteltype.forEach((e, index) => {
           str += "hoteltype=" + e + "&";
         });
       }
-      console.log(str);
+
 
       if (this.params.hotelbrand) {
         this.params.hotelbrand.forEach((e, index) => {
           str += "hotelbrand=" + e + "&";
         });
       }
-      console.log(str);
+  
 
       if (this.params.hotelasset) {
         this.params.hotelasset.forEach((e, index) => {
           str += "hotelasset=" + e + "&";
         });
       }
-      console.log(str);
+
 
       let cityName=this.$route.query.cityName
-      console.log(str,'修改数据添加到url上');
+
       this.$router.replace(`/hotel?cityName=${cityName}&` + str);
       this.$emit('changeUrl')
     },
