@@ -1,9 +1,11 @@
 <template>
   <div class="container" v-if="hotels">
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/' }">酒店</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/hotel' }">酒店</el-breadcrumb-item>
       <el-breadcrumb-item
-        ><a href="/">{{ hotels[0].real_city + "酒店" }}</a></el-breadcrumb-item
+        ><a href="/hotel?cityName=广州市">{{
+          hotels[0].real_city + "酒店"
+        }}</a></el-breadcrumb-item
       >
       <el-breadcrumb-item>{{ hotels[0].name }}</el-breadcrumb-item>
     </el-breadcrumb>
@@ -16,34 +18,8 @@
     <!-- 酒店图展示部分 -->
     <div>
       <el-row class="show_pic">
-        <el-col :span="16" class="show_pic_l">
-          <img :src="pictures" alt="" />
-        </el-col>
-        <el-col :span="8">
-          <el-row class="show_pic_s">
-            <!--<el-col :span="12" class="show_pic_img" v-for="(item,i) in pictures" :key='i'>
-                      <img :src='item' alt="" @click="changePic($event)">
-                  </el-col> -->
-
-            <!-- <el-col :span="12" class="show_pic_img">
-              <img src="@/static/1.jpeg" alt="" @click="changePic($event)" />
-            </el-col>
-            <el-col :span="12" class="show_pic_img">
-              <img src="@/static/2.jpeg" alt="" @click="changePic($event)" />
-            </el-col>
-            <el-col :span="12" class="show_pic_img">
-              <img src="@/static/3.jpeg" alt="" @click="changePic($event)" />
-            </el-col>
-            <el-col :span="12" class="show_pic_img">
-              <img src="@/static/4.jpeg" alt="" @click="changePic($event)" />
-            </el-col>
-            <el-col :span="12" class="show_pic_img">
-              <img src="@/static/5.jpeg" alt="" @click="changePic($event)" />
-            </el-col>
-            <el-col :span="12" class="show_pic_img">
-              <img src="@/static/6.jpeg" alt="" @click="changePic($event)" />
-            </el-col> -->
-          </el-row>
+        <el-col :span="24">
+          <pictab></pictab>
         </el-col>
       </el-row>
     </div>
@@ -143,7 +119,7 @@
                 type="circle"
                 :percentage="this.scores.environment * 10"
                 :color="customColor"
-                text-inside="服务"
+                :text-inside="true"
                 class="comments_circle_r"
               ></el-progress>
             </div>
@@ -152,7 +128,7 @@
                 type="circle"
                 :percentage="this.scores.product * 10"
                 :color="customColor"
-                text-inside="服务"
+                :text-inside="true"
                 class="comments_circle_r"
                 :style="{ left: 1 * 150 + 'px' }"
               ></el-progress>
@@ -162,7 +138,7 @@
                 type="circle"
                 :percentage="this.scores.service * 10"
                 :color="customColor"
-                text-inside="服务"
+                :text-inside="true"
                 class="comments_circle_r"
                 :style="{ left: 2 * 150 + 'px' }"
               ></el-progress>
@@ -191,9 +167,11 @@
 
 <script>
 import maps from "@/components/hotel/hotelMap";
+import pictab from "@/components/hotel/hotelPic";
 export default {
   components: {
     maps,
+    pictab,
   },
   data() {
     return {
@@ -285,26 +263,6 @@ export default {
 }
 .show_pic {
   margin: 40px 0;
-  height: 360px;
-  .show_pic_l {
-    width: 640px;
-    height: 360px;
-    margin-right: 25px;
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
-  .show_pic_s {
-    .show_pic_img {
-      padding-right: 10px;
-      width: 50%;
-      margin-bottom: 13px;
-      img {
-        width: 100%;
-      }
-    }
-  }
 }
 
 .table_price {

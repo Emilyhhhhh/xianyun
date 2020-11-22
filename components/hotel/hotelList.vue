@@ -12,8 +12,11 @@
           </div>
         </el-col>
 
-        <el-col :span="10">
-          <h4 class="hotel-cn-name">{{ v.name }}</h4>
+        <el-col :span="10" style="cursor: pointer">
+          <nuxt-link :to="`/hotel/hotelDetail?id=${v.id}`">
+            <h4 class="hotel-cn-name">{{ v.name }}</h4>
+          </nuxt-link>
+
           <div class="hotel-en-name">
             {{ v.alias }}
             <span v-if="v.hotellevel">

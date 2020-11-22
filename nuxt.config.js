@@ -46,6 +46,11 @@ export default {
             // 如果只在浏览器加载的代码, 可以添加一个 属性 ssr: false
             ssr: false
         },
+        {
+            src: '@/plugins/swiper',
+            // 如果只在浏览器加载的代码, 可以添加一个 属性 ssr: false
+            ssr: false
+        },
         '@/plugins/axios', // 调用插件
         {
             src: '@/plugins/vue2editor',
@@ -67,7 +72,7 @@ export default {
     axios: {
         // See https://github.com/nuxt-community/axios-module#options
         baseURL: "http://157.122.54.189:9095" // 新增备用地址
-            // baseURL: "http://127.0.0.1:1337" // 新增axios默认请求路径 		  
+        // baseURL: "http://127.0.0.1:1337" // 新增axios默认请求路径 		  
     },
 
     /*
@@ -79,6 +84,6 @@ export default {
         /*
          ** You can extend webpack config here
          */
-        extend(config, ctx) {}
+        extend(config, ctx) { }
     },
 }
