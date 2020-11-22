@@ -42,8 +42,19 @@
       </div>
     </div>
     <div class="content-box">
+      <div
+        v-if="comTotal == 0"
+        style="text-align: center; font-size: 24px; color: #666"
+      >
+        暂无评论，快来抢个沙发吧~
+      </div>
       <!-- 评论项 -->
-      <div class="comment-item" v-for="(item, key) in comList" :key="key">
+      <div
+        class="comment-item"
+        v-for="(item, key) in comList"
+        :key="key"
+        v-else
+      >
         <div>
           <!-- 子评论 -->
           <secondcom
