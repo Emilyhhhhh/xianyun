@@ -30,11 +30,11 @@ export default function ({ $axios, redirect, store }) {
         const token = store.state.userstore.userInfo.token
 
         if (token) {
-            console.log('nuxt/axios onRequest', store.state.userstore.userInfo.token);
+            // console.log('nuxt/axios onRequest', store.state.userstore.userInfo.token);
             if (checkUrl(config.url)) {
                 config.headers.Authorization = 'Bearer ' + token
             }
-            console.log(config)
+            // console.log(config)
 
         }
     });
