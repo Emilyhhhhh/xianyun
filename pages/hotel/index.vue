@@ -10,15 +10,15 @@
         <div class="grid-content">
           <!-- 区域部分 -->
           <div class="search-area">
-            <div class="left">区域：</div>
-            <div class="right">
+            <el-col :span="3" class="left">区域：</el-col>
+            <el-col :span="24" class="right">
                 <div class="spans" :class="{active:flag}">
                   <span v-for="(v,i) in scenics" :key="i">{{v.name}}</span>
                 </div>
-                  <a href="#" @click.prevent.self="showTag"><i  class="el-icon-d-arrow-right"></i>
+                  <a href="#" @click.prevent.self="showTag"><i class="el-icon-d-arrow-right" :class="{'option-row':!flag}"></i>
               等{{scenics.length}}个区域
             </a>
-            </div>
+            </el-col>
           </div>
           <!-- 均价部分 -->
           <div class="search-price">
@@ -141,7 +141,7 @@ export default {
     showTag(){
       this.flag = !this.flag
     },
-
+    
     // 改变当前页时 _limit 条数  _start  开始数据（分页） city城市id
     handleCurrentChange(val) {
          this.$axios({
@@ -383,19 +383,29 @@ export default {
   display: flex;
   margin-bottom: 20px;
   .left{
-    width: 50%;
+    width: 110px;
+
   }
   .right{
   overflow: visible;
   .active{
+    transition: all 2s;
   height: 40px;
     overflow: hidden;
   }
   .el-icon-d-arrow-right{
     color: orange;
+     transition: all 1s;
     transform: rotate(90deg)
   }
+  .option-row{
+     color: orange;
+     transition: all 1s;
+    transform: rotate(270deg)
   }
+  
+  }
+  
 }
   /deep/ span{
       margin-right: 15px;
