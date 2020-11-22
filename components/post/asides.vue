@@ -17,11 +17,10 @@
           :style="{ top: -i * 41 + 'px' }"
         >
           <a
-            href=""
+            href="#"
             v-for="(item, i) in children"
             :key="i"
             class="showCity_item"
-            @click="postCity(item.city)"
           >
             <i class="i_index">{{ i + 1 }}</i
             ><strong>{{ item.city }}</strong
@@ -59,9 +58,6 @@ export default {
     };
   },
   methods: {
-    postCity(city) {
-      this.$router.push("//post?city=" + city);
-    },
     moveInc(i) {},
     moveout() {
       for (let i in this.$refs.city) {
@@ -192,10 +188,12 @@ export default {
   padding-bottom: 10px;
   border-bottom: 1px solid #ddd;
   margin-bottom: 10px;
+  margin-top: 10px;
 }
 /deep/.pic {
   display: block;
   width: 260px;
+
   .link {
     width: 100%;
   }

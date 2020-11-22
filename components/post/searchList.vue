@@ -37,10 +37,7 @@
             <i class="el-icon-location-information"></i>
             <span>{{ item.cityName }}</span>
             <span>by</span>
-            <div
-              class="userstatus"
-              @click="$router.push({ path: '/user/personal' })"
-            >
+            <div class="userstatus">
               <img
                 :src="baseURL + item.account.defaultAvatar"
                 alt=""
@@ -73,10 +70,7 @@
             {{ item.summary }}
           </p>
           <div class="footer">
-            <div
-              class="userdetail"
-              @click="$router.push({ path: '/user/personal' })"
-            >
+            <div class="userdetail">
               <i class="el-icon-location-information"></i>
               <span>{{ item.cityName }}</span>
               <span>by</span>
@@ -129,10 +123,10 @@ export default {
   watch: {
     reList() {
       if (this.reList) {
+        console.log(1);
         this.currentList = this.reList;
-      } else {
-        this.getlist(this.currentPage, this.pageSize);
       }
+      this.getlist(this.currentPage, this.pageSize);
     },
   },
   methods: {
