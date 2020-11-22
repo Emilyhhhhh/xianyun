@@ -12,7 +12,7 @@
           <h1>{{ article.title }}</h1>
           <div class="postinfo">
             <span>发布时间：{{ article.created_at | dateHandle }}</span>
-            <span>阅读:{{ article.watch }}</span>
+            <span>阅读:{{ article.watch ? article.watch : 0 }}</span>
           </div>
           <div class="art" v-html="article.content"></div>
           <div class="postctrl">
