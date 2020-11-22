@@ -4,22 +4,7 @@
     <el-row>
       <!-- 右部分 -->
       <el-col :span="6" class="left">
-        <div class="left-up">
-          <span>热门城市 </span>
-          <span>推荐城市</span>
-          <span>奔向城市</span>
-          <span>主题推荐</span>
-        </div>
-        <!-- 右部分 下 推荐城市 -->
-        <div class="left-below">
-          <div class="left-below-1">推荐城市</div>
-          <div>
-            <a href="">
-              <img src="images/pic_sea.jpeg" alt="" />
-              2
-            </a>
-          </div>
-        </div>
+        <asides></asides>
       </el-col>
 
       <!-- 左部分 -->
@@ -41,6 +26,7 @@
 <script>
 import searchtab from "@/components/post/search";
 import searchlist from "@/components/post/searchList";
+import asides from "@/components/post/asides";
 export default {
   data() {
     return {
@@ -50,6 +36,7 @@ export default {
   components: {
     searchtab,
     searchlist,
+    asides,
   },
   methods: {
     getList(data) {
@@ -61,25 +48,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-// 右部分
-.left {
-  background-color: rgba(102, 204, 255, 0.274);
-}
-// 右部分 上文框
-
-.left-up {
-  border: 1px solid #dddddd;
-  > span {
-    display: block;
-    padding: 0 20px;
-    line-height: 40px;
-    font-size: 14px;
-    border-bottom: 1px solid#dddddd;
-  }
-}
-
-// 左部分
 .right {
-  margin: 0 20px;
+  margin-left: 40px;
 }
 </style>
