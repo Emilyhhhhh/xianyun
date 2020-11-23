@@ -4,7 +4,7 @@
     "private": true,
     "description": "这里是我的闲云旅游网",
     "scripts": {
-        "dev": "nuxt --open",
+        "dev": "nuxt --open --hostname 0.0.0.0",
         "build": "nuxt build",
         "start": "nuxt start",
         "generate": "nuxt generate"
