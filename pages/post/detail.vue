@@ -126,7 +126,7 @@ export default {
     width: 100%;
 
     /deep/img {
-      width: 100%;
+      max-width: 700px;
     }
   }
   .postctrl {
